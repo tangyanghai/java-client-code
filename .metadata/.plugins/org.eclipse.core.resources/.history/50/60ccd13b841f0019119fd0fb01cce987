@@ -1,0 +1,74 @@
+package com.tomcat.test;
+
+import java.io.IOException;
+import java.sql.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.omg.CORBA_2_3.portable.OutputStream;
+
+/**
+ * Servlet implementation class BackJson
+ */
+@WebServlet("/BackJson")
+public class BackJson extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	private User buildUserDO() {
+		User user = new User();
+		user.setName("ÕÅÈý");
+		user.setPassword("123");
+		user.setAge(11);
+		user.setBirthDay(new Date(System.currentTimeMillis()));
+		return user;
+	}
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public BackJson() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.setContentType("application/json; charset=utf-8");
+		response.setCharacterEncoding("UTF-8");
+
+		String userJson;
+		try {
+			userJson = JSONObject.valueToString(buildUserDO());
+			ServletOutputStream out = response.getOutputStream();
+			out.write(userJson.getBytes("UTF-8"));
+			out.flush();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
